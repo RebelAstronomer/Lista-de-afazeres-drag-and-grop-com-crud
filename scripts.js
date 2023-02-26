@@ -64,16 +64,6 @@ const post = {
     }
 }
 
-// Deletar os posts
-function deletePost(myId) {
-    // Pegando a div e o id correto dentro do array
-    const postIndex = arrayFindValue(post.date, myId);
-    const $postDiv = document.getElementById(`${myId}`);
-
-    console.log(postIndex);
-    //$postDiv.remove();
-}
-
 // Função para checar o afazeres
 function checkPost() {
     const $parent = document.querySelector('.main-post-block-buttons');
@@ -116,6 +106,19 @@ function checkPost() {
     }
 }
 
+// Deletar os posts
+function deletePost(myId) {
+    // Pegando a div e o id correto dentro do array
+    const postIndex = arrayFindValue(post.date, myId);
+    const $postDiv = document.getElementById(`${myId}`);
+
+    console.log(postIndex);
+    if (post.date[postIndex].id == myId) {
+        delete post.date[postIndex];
+    }
+    $postDiv.remove();
+}
+
 // Salvando o titulo
 function addTitle(event) {
     if(event.key == 'Enter') {
@@ -149,34 +152,12 @@ function addInfo(event) {
 }
 
 // Função para encontar os ids das postagens
-function arrayFindId(array, valor) {
-    for (let index=0; index<array.length; index++) {
-        if (array[index].id == valor) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
-// Função para encontar os valores do array
 function arrayFindValue(array, valor) {
-    for (let element of array) {
-        if (element.id == valor && arrayFindId(array, valor) == true) {
-            return element;
-        }
-    }
-}
-
-/*
-// Função para encontar os ids das postagens
-function arrayFindId(array, valor) {
     for (let index=0; index<array.length; index++) {
         if (array[index].id == valor) {
-            return true;
+            return index;
         } else {
-            return false;
+            return '';
         }
     }
 }
-*/

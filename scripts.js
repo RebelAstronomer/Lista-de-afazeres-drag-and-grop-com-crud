@@ -49,7 +49,7 @@ const post = {
                 <!-- BLOCO DOS BOTÕES -->
                 <div class='main-post-block-buttons'>
                     <img src="img/delete_icon.svg" alt="delete_icon" onclick="deletePost(${id})" class='main-div-delete-button' height=32px>
-                    <img src="img/check_box.svg" alt="delete_icon" onclick="checkPost(${id})" class='main-div-check-button' height=32px>
+                    <img id='buttonCheck${id}' src="img/check_box.svg" alt="delete_icon" onclick="checkPost(${id})" class='main-div-check-button' height=32px>
                 </div>
             </div>
         `
@@ -65,18 +65,16 @@ const post = {
 }
 
 // Função para checar o afazeres
-function checkPost() {
-    const $parent = document.querySelector('.main-post-block-buttons');
-    const $checkButtonImg = document.querySelector('.main-div-check-button').src;
-    const id = $parent.parentNode.id;
+function checkPost(myId) {
+    const $checkButtonImg = document.querySelector(`#buttonCheck${myId}`);
 
-    if ($checkButtonImg.indexOf('check_box.svg') !=-1) {
+    if ($checkButtonImg.src == 'http://127.0.0.1:5500/Projetos/ListaDeAfazeresCrud/Lista-de-afazeres-CRUD/img/check_box.svg') {
         // Mudando a imagem
-        document.querySelector('.main-div-check-button').src = 'img/check_box_fill.svg';
+        $checkButtonImg.src = 'img/check_box_fill.svg';
 
         // Checando o id
         post.date.forEach(element => {
-            if (element.id == id) {
+            if (element.id == myId) {
                 element.completed = true;
                 
                 // Postrando a data que foi completada
@@ -88,13 +86,14 @@ function checkPost() {
                 $mainDiv.appendChild(compDate);
             }
         });
+
     } else {
         // Mudando a imagem
-        document.querySelector('.main-div-check-button').src = 'img/check_box.svg';
+        $checkButtonImg.src = 'img/check_box.svg';
 
         // Checando o id
         post.date.forEach(element => {
-            if (element.id == id) {
+            if (element.id == myId) {
                 element.completed = false;
 
                 let $compDate = document.querySelector('.completed-date-para');
@@ -103,19 +102,23 @@ function checkPost() {
                 }
             }
         });
+
     }
+
 }
 
 // Deletar os posts
 function deletePost(myId) {
-    // Pegando a div e o id correto dentro do array
-    const postIndex = arrayFindValue(post.date, myId);
     const $postDiv = document.getElementById(`${myId}`);
 
-    console.log(postIndex);
-    if (post.date[postIndex].id == myId) {
-        delete post.date[postIndex];
+    // Procurando o index com o id desejado e apagando ela
+    for (let index=0; index<post.date.length; index++) {
+        if (post.date[index].id == myId) {
+            post.date.splice(index,1);
+        }
     }
+
+    // Apagando a div
     $postDiv.remove();
 }
 
@@ -148,16 +151,5 @@ function addInfo(event) {
                 element.info = $input.value;
             }
         });
-    }
-}
-
-// Função para encontar os ids das postagens
-function arrayFindValue(array, valor) {
-    for (let index=0; index<array.length; index++) {
-        if (array[index].id == valor) {
-            return index;
-        } else {
-            return '';
-        }
     }
 }

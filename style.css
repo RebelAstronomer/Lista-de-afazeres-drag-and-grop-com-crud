@@ -29,6 +29,10 @@
     visibility: hidden;
 }
 
+.block-text {
+    gap: 5px;
+}
+
 .block-text:hover .edit-icon {
     visibility: visible;
 }

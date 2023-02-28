@@ -33,7 +33,7 @@ const post = {
         $forms.insertAdjacentHTML('afterbegin',
         `
             <!-- BLOCO PRINCIPAL -->
-            <div class='main-post-block' id=${id}>
+            <div class='main-post-block-toDo' id=${id}>
                 <!-- BLOCO DE TEXTO -->
                 <div class='main-post-block-text'>
                     <div class='block-text main-div-title'>
@@ -74,6 +74,8 @@ const post = {
 function checkPost(myId) {
     const $checkButton = document.querySelector(`#buttonCheck${myId}`);
     const $checkButtonImg = document.querySelector(`#buttonCheck${myId}`).src;
+    let $mainDiv = document.getElementById(`${myId}`);
+    $mainDiv.classList.toggle('main-post-block-done');
     
     if ($checkButtonImg.indexOf('check_box.svg') != -1) {
         $checkButton.src = 'img/check_box_fill.svg';
@@ -85,7 +87,6 @@ function checkPost(myId) {
                 element.completedDate = new Date();
                 
                 // Criando um paragrafo com a data que foi completada
-                let $mainDiv = document.getElementById(`${myId}`);
                 let compDate = document.createElement('p');
                 let actualDate = new Date();
                 compDate.className = 'completed-date-para';

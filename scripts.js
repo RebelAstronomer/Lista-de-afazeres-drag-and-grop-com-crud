@@ -9,10 +9,10 @@ class postagem {
     completed = false;
 
     // Passando as informações
-    constructor(_id, _title, _infor, _craetionDate, _endDate, _completed) {
+    constructor(_id, _title, _info, _craetionDate, _endDate, _completed) {
         this.id = _id;
         this.title = _title;
-        this.info = _infor;
+        this.info = _info;
         this.craetionDate = _craetionDate;
         this.endDate = _endDate;
         this.completed = _completed;
@@ -36,15 +36,21 @@ const post = {
             <div class='main-post-block' id=${id}>
                 <!-- BLOCO DE TEXTO -->
                 <div class='main-post-block-text'>
-                    <label contenteditable class='main-div-title' onKeyPress='addTitle(event)'><strong>Insira um nome</strong></label>
-                    <div contenteditable class='main-div-info' onKeyPress='addInfo(event)'>Descrição</div>
+                    <div class='block-text main-div-title'>
+                        <p id='title${id}' onclick='activeEditable(${id},"title")' onblur='saveChange(${id},"title")'><strong>Insira um nome</strong></p>
+                        <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
+                    </div>
+                    <div class='block-text main-div-info'>
+                        <p id='info${id}' onclick='activeEditable(${id},"info")' onblur='saveChange(${id},"info")'>Descrição</p>
+                        <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
+                    </div>
                 </div>
                 <!-- BLOCO DAS DATAS -->
                 <div class='main-post-block-date'>
                     <label>Criado em: </label>
                     <input type='date' class='main-div-create-date'></input>
                     <label>Data final: </label>
-                    <input type='date' class='main-div-end-date'></input>
+                    <input id='endDate${id}' type='date' class='main-div-end-date' onblur='saveEndDate(${id})'></input>
                 </div>
                 <!-- BLOCO DOS BOTÕES -->
                 <div class='main-post-block-buttons'>
@@ -58,7 +64,7 @@ const post = {
         document.querySelector('.main-div-create-date').valueAsDate = new Date();
 
         // Salvando os dados
-        post.date.push(new postagem(id,'','',new Date(),'',false));
+        post.date.push(new postagem(id,'Insira um nome','Descrição',new Date(),'',false));
 
         
     }
@@ -66,43 +72,45 @@ const post = {
 
 // Função para checar o afazeres
 function checkPost(myId) {
-    const $checkButtonImg = document.querySelector(`#buttonCheck${myId}`);
-
-    if ($checkButtonImg.src == 'http://127.0.0.1:5500/Projetos/ListaDeAfazeresCrud/Lista-de-afazeres-CRUD/img/check_box.svg') {
-        // Mudando a imagem
-        $checkButtonImg.src = 'img/check_box_fill.svg';
+    const $checkButton = document.querySelector(`#buttonCheck${myId}`);
+    const $checkButtonImg = document.querySelector(`#buttonCheck${myId}`).src;
+    
+    if ($checkButtonImg.indexOf('check_box.svg') != -1) {
+        $checkButton.src = 'img/check_box_fill.svg';
 
         // Checando o id
         post.date.forEach(element => {
             if (element.id == myId) {
                 element.completed = true;
+                element.completedDate = new Date();
                 
-                // Postrando a data que foi completada
-                let $mainDiv = document.querySelector('.main-post-block-buttons').parentNode;
+                // Criando um paragrafo com a data que foi completada
+                let $mainDiv = document.getElementById(`${myId}`);
                 let compDate = document.createElement('p');
                 let actualDate = new Date();
                 compDate.className = 'completed-date-para';
+                compDate.id = `completeDate${myId}`;
                 compDate.innerHTML = ` Completado em: ${actualDate.toLocaleDateString()}`;
                 $mainDiv.appendChild(compDate);
             }
         });
-
     } else {
         // Mudando a imagem
-        $checkButtonImg.src = 'img/check_box.svg';
+        $checkButton.src = 'img/check_box.svg';
 
         // Checando o id
         post.date.forEach(element => {
             if (element.id == myId) {
                 element.completed = false;
+                element.completedDate = 0;
 
-                let $compDate = document.querySelector('.completed-date-para');
+                // Deletando o paragrafro com a data da checagem
+                let $compDate = document.querySelector(`#completeDate${myId}`);
                 if ($compDate != '') {
                     $compDate.remove();
                 }
             }
         });
-
     }
 
 }
@@ -122,34 +130,43 @@ function deletePost(myId) {
     $postDiv.remove();
 }
 
-// Salvando o titulo
-function addTitle(event) {
-    if(event.key == 'Enter') {
-        // Pegando as informações necessárias
-        const $input = document.querySelector('.main-div-title');
-        const id = $input.parentNode.id;
+// Função para ativar o modo de edição dos textos
+function activeEditable(myId, myClass) {
+    const $postDiv = document.getElementById(`${myId}`);
+    const $text = document.querySelector(`#${myClass}${myId}`); 
 
-        // Checando qual é o titulo que tem que ser mudado
-        post.date.forEach(element => {
-            if (element.id == id) {
-                element.title = $input.value;
-            }
-        });
+    if ($postDiv.id == myId) {
+        $text.contentEditable = 'true';
+    } else {
+        console.log('não foi titulo');
     }
+    
 }
 
-// Salvando as informações
-function addInfo(event) {
-    if(event.key == 'Enter') {
-        // Pegando as informações necessárias
-        const $input = document.querySelector('.main-div-info');
-        const id = $input.parentNode.id;
+// Função para salvar as informações editadas no array
+function saveChange(myId, myClass) {
+    const $text = document.querySelector(`#${myClass}${myId}`);
 
-        // Checando qual é o titulo que tem que ser mudado
-        post.date.forEach(element => {
-            if (element.id == id) {
-                element.info = $input.value;
+    // Checando qual é o titulo que tem que ser mudado
+    post.date.forEach(element => {
+        if (element.id == myId) {
+            if (myClass == 'title') {
+                element.title = $text.textContent;
+            } else if (myClass == 'info') {
+                element.info = $text.textContent;
             }
-        });
-    }
+        }
+    });
+}
+
+// Função para salvar a data final para o afazer
+function saveEndDate(myId) {
+    const $date = document.querySelector(`#endDate${myId}`);
+
+    // Checando qual é o titulo que tem que ser mudado
+    post.date.forEach(element => {
+        if (element.id == myId) {
+            element.endDate = $date.valueAsDate;
+        }
+    });    
 }

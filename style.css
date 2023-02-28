@@ -20,8 +20,17 @@
     width: 50em;
 }
 
-hr {
-    display: none;
+.block-text {
+    display: flex;
+    flex-direction: row;
+}
+
+.edit-icon {
+    visibility: hidden;
+}
+
+.block-text:hover .edit-icon {
+    visibility: visible;
 }
 
 .main-div-info {

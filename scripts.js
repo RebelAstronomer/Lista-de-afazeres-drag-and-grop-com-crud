@@ -80,7 +80,7 @@ function checkPost(myId) {
     // Checando se a imagem é a correta
     if ($checkButtonImg.indexOf('check_box.svg') != -1) {
         $checkButton.src = 'img/check_box_fill.svg';
-
+        ////
         // Checando o id
         post.date.forEach(element => {
             if (element.id == myId) {

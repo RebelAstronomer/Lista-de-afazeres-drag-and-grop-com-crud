@@ -77,6 +77,7 @@ function checkPost(myId) {
     let $mainDiv = document.getElementById(`${myId}`);
     $mainDiv.classList.toggle('main-post-block-done');
     
+    // Checando se a imagem é a correta
     if ($checkButtonImg.indexOf('check_box.svg') != -1) {
         $checkButton.src = 'img/check_box_fill.svg';
 

@@ -25,8 +25,33 @@ body {
 
 }
 
-.nav .nav-title {
-    
+.main {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-colunm {
+    padding: 15px;
+}
+
+.colunm {
+    /*Alinhamento*/
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px;
+    /*Cor*/
+    background-color: white;
+    border-radius: 10px;
+}
+
+.colunm-title {
+    /*Alinhamento*/
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    /**/
 }
 
 .main-forms {

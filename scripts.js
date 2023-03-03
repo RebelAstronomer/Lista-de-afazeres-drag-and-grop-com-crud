@@ -19,30 +19,71 @@ class postagem {
         this.completedDate = 0;
     }
 }
+/* OBJETO COLUNA */
+class colunm {
+    // Specs
+    id = '';
+    title = '';
+
+    // Passando as informações
+    constructor(_id,_title) {
+        this.id = _id;
+        this.title = _title;
+    }
+}
 
 /* OBJETO PARA SALVAR OS POSTS */
 const post = {
     date : [],
+    colunms : [],
+    createColumn() {
+        // Pegando as divs
+        const $main = document.querySelector('.main');
+        const id = Date.now();
+
+        // Criando a coluna
+        $main.insertAdjacentHTML('afterbegin',
+        `
+            <div class="main-colunm ${id}" id=mainColunm${id}>
+                <div class="main-div">
+                    <div class='colunm'>
+                        <div id='colunmTitleDiv${id}' class='colunm-title'>
+                                <div class='colunm-btn'>
+                                    <img src="img/add_icon.svg" alt="add_icon" onclick="post.createPost(${id})" class="div-head-add-button" height=25px>
+                                </div>
+                                <p id='colunmTitle${id}' onclick='post.activeEditable(${id},"colunmTitle")' onblur='post.saveChange(post.colunms,${id},"colunmTitle")'><strong>Insira um Nome</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+        );
+
+        // Salvnado as informações da coluna
+        post.colunms.push(new colunm(id,'Insira um nome'));
+
+    },
     // Criando o post
-    createPost() {
+    createPost(myId) {
 
         // Pegando a tag do forms
-        const $forms = document.querySelector('.main-forms');
+        const $container = document.querySelector(`#mainColunm${myId}`);
         const id = Date.now();
 
         // Criando as tags para o HTML
-        $forms.insertAdjacentHTML('afterbegin',
+        $container.insertAdjacentHTML('afterend',
         `
             <!-- BLOCO PRINCIPAL -->
-            <div class='main-post-block-toDo' id=${id}>
+            <div class='main-post-block-toDo' id=${id} draggable="true">
                 <!-- BLOCO DE TEXTO -->
                 <div class='main-post-block-text'>
                     <div class='block-text main-div-title'>
-                        <p id='title${id}' onclick='post.activeEditable(${id},"title")' onblur='post.saveChange(${id},"title")'><strong>Insira um nome</strong></p>
+                        <p id='title${id}' onclick='post.activeEditable(${id},"title")' onblur='post.saveChange(post.date,${id},"title")'><strong>Insira um nome</strong></p>
                         <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
                     </div>
                     <div class='block-text main-div-info'>
-                        <p id='info${id}' onclick='post.activeEditable(${id},"info")' onblur='post.saveChange(${id},"info")'>Descrição</p>
+                        <p id='info${id}' onclick='post.activeEditable(${id},"info")' onblur='post.saveChange(post.date,${id},"info")'>Descrição</p>
                         <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
                     </div>
                 </div>
@@ -136,22 +177,26 @@ const post = {
 
         if ($postDiv.id == myId) {
             $text.contentEditable = 'true';
-        } else {
-            console.log('não foi titulo');
         }
         
     },
     // Função para salvar as informações editadas no array
-    saveChange(myId, myClass) {
+    saveChange(array, myId, myClass) {
         const $text = document.querySelector(`#${myClass}${myId}`);
 
         // Checando qual é o titulo que tem que ser mudado
-        post.date.forEach(element => {
+        array.forEach(element => {
             if (element.id == myId) {
-                if (myClass == 'title') {
-                    element.title = $text.textContent;
-                } else if (myClass == 'info') {
-                    element.info = $text.textContent;
+                switch(myClass) {
+                    case 'title':
+                        element.title = $text.textContent;
+                        break;
+                    case 'info':
+                        element.info = $text.textContent;
+                        break;
+                    case 'colunmTitle':
+                        element.title = $text.textContent;
+                        break;
                 }
             }
         });
@@ -167,4 +212,53 @@ const post = {
             }
         });    
     }
+}
+
+const $colunm = document.querySelectorAll(".main-colunm");
+const $posts = document.querySelectorAll('.main-post-block-toDo');
+
+// Aplicando as propriedades em cada item para serem pegos e soltos
+$posts.forEach(item => {
+    // Aplicando um evento quando o item é pego, mudando sua class
+    item.addEventListener('dragstart', () => {
+        item.classList.add('dragging');
+    });
+    // Aplicando um evento quando o item é solto, fazendo ele voltar ao normal
+    item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+    });
+});
+
+// Aplicando um listerner para que as coluns detectem dragover
+$colunm.forEach(container => {
+    container.addEventListener('dragover', e => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(container, e.clientY);
+        const draggable = document.querySelector('.dragging');
+        
+        // Checando aonde o item ira ficar
+        if (afterElement == null) {
+            container.appendChild(draggable);
+        } else {
+            container.insertBefore(draggable, afterElement);
+        }
+    });
+});
+
+
+// Função para pegar o meio do item e retornar
+function getDragAfterElement(container, y) {
+    const draggbaleElements = [...container.querySelectorAll('.main-post-block-toDo:not(.dragging)')]
+
+    return draggbaleElements.reduce((closest, child) => {
+
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+            return {offset: offset, element: child};
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY}).element;
 }

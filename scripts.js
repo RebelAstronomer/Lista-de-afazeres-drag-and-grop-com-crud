@@ -58,7 +58,7 @@ const post = {
 
                                 <img src="img/delete_icon.svg" alt="delete_icon" onclick='post.deletePost(post.colunms,${id},"mainColunm")' class='main-div-delete-button' height=32px>
                             
-                                <p id='colunmTitle${id}' onclick='post.activeEditable(${id},"colunmTitle")' onblur='post.saveChange(post.colunms,${id},"colunmTitle")'><strong>Insira um Nome</strong></p>
+                                <p id='colunmTitle${id}' onclick='post.activeEditable(${id},"colunmTitle","mainColunm")' onblur='post.saveChange(post.colunms,${id},"colunmTitle")'><strong>Insira um Nome</strong></p>
                                 
                                 <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
                             </div>
@@ -107,11 +107,11 @@ const post = {
                 <!-- BLOCO DE TEXTO -->
                 <div class='main-post-block-text'>
                     <div class='block-text main-div-title'>
-                        <p id='title${id}' onclick='post.activeEditable(${id},"title")' onblur='post.saveChange(post.date,${id},"title")'><strong>Insira um nome</strong></p>
+                        <p id='title${id}' onclick='post.activeEditable(${id},"title","mainPost")' onblur='post.saveChange(post.date,${id},"title")'><strong>Insira um nome</strong></p>
                         <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
                     </div>
                     <div class='block-text main-div-info'>
-                        <p id='info${id}' onclick='post.activeEditable(${id},"info")' onblur='post.saveChange(post.date,${id},"info")'>Descrição</p>
+                        <p id='info${id}' onclick='post.activeEditable(${id},"info","mainPost")' onblur='post.saveChange(post.date,${id},"info")'>Descrição</p>
                         <img class='edit-icon' src="img/edit.svg" alt="edit" height=16px> 
                     </div>
                 </div>
@@ -231,16 +231,14 @@ const post = {
         }
     },
     // Função para ativar o modo de edição dos textos
-    activeEditable(myId, myClass) {
-        const $postDiv = document.querySelector(`#${myClass}${myId}`); 
+    activeEditable(myId, myClass, myBlock) {
+        const $postDiv = document.querySelector(`#${myBlock}${myId}`); 
         const $text = document.querySelector(`#${myClass}${myId}`); 
         
         // Checando se o id bate
-        if ($postDiv.id == myId) {
+        if ($postDiv.id == myBlock+myId) {
             $text.contentEditable = 'true';
         }
-        console.log($postDiv);
-        console.log($text);
     },
     // Função para salvar as informações editadas no array
     saveChange(array, myId, myClass) {

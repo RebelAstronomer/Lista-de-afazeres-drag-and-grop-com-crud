@@ -232,14 +232,15 @@ const post = {
     },
     // Função para ativar o modo de edição dos textos
     activeEditable(myId, myClass) {
-        const $postDiv = document.getElementById(`${myId}`);
+        const $postDiv = document.querySelector(`#${myClass}${myId}`); 
         const $text = document.querySelector(`#${myClass}${myId}`); 
-
+        
         // Checando se o id bate
         if ($postDiv.id == myId) {
             $text.contentEditable = 'true';
         }
-        
+        console.log($postDiv);
+        console.log($text);
     },
     // Função para salvar as informações editadas no array
     saveChange(array, myId, myClass) {

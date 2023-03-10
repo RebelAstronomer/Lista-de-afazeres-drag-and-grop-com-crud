@@ -124,8 +124,12 @@ const post = {
                 </div>
                 <!-- BLOCO DOS BOTÕES -->
                 <div class='main-post-block-buttons'>
-                    <img src="img/delete_icon.svg" alt="delete_icon" onclick="post.deletePost(post.colunms,${id},'mainPost')" class='main-div-delete-button' height=32px>
-                    <img id='buttonCheck${id}' src="img/check_box.svg" alt="delete_icon" onclick="post.checkPost(${id},'mainPost')" class='main-div-check-button' height=32px>
+                    <div class='delete-btn'>
+                        <img src="img/delete_icon.svg" alt="delete_icon" onclick="post.deletePost(post.colunms,${id},'mainPost')" class='main-div-delete-button' height=32px>
+                    </div>
+                    <div class='check-btn'>
+                        <img id='buttonCheck${id}' src="img/check_box.svg" alt="delete_icon" onclick="post.checkPost(${id},'mainPost')" class='main-div-check-button' height=32px>
+                    </div>
                 </div>
             </div>
         `);
@@ -292,3 +296,4 @@ function getDragAfterElement(container, y) {
         }
     }, { offset: Number.NEGATIVE_INFINITY}).element;
 }
+

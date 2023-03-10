@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+/*  Fonts:
+
+    Roboto 
+    Open Sans 
+
+*/
+
 * {
     padding: 0;
     margin: 0;
@@ -52,7 +60,8 @@ body {
     flex-direction: row;
     gap: 5px;
     align-items: center;
-    /**/
+    /* Fonte */
+    font-family: Open Sans;
 }
 
 .colunm-btn p {
@@ -66,6 +75,12 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 25px;
+}
+
+.main-post-block {
+    /* Fonte */
+    font-family: Roboto;
+    font-size: 16px;
 }
 
 .main-post-block.toDo {
@@ -115,18 +130,45 @@ body {
     visibility: visible;
 }
 
+.main-div-title {
+    font-family: Open Sans;
+}
+
 .main-div-info {
     margin-bottom: 0.5em;
     margin-top: 0.5em;
     padding-top: 0.5em;
-    border-top: 0.1em solid black;
-    border-bottom: 0.1em solid black;
-
-    /* border-radius: 5px; */
+/*     border-top: 0.1em solid black;
+    border-bottom: 0.1em solid black; */
 
 }
 
+.main-post-block-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.main-post-block-buttons div{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.check-btn {
+/*     background-color: rgba(0, 255, 42, 0.6); */
+}
+
+.delete-btn {
+ /*    background-color: rgba(255, 0, 42, 0.6); */
+}
+
 input[type=date] {
+    cursor: text;
     border: none;
     text-align: center;
 }
@@ -135,4 +177,12 @@ input[type=date] {
     margin-bottom: 0.5em;
     padding-bottom: 0.5em;
     border-bottom: 0.1em solid black;
+
+    font-family: Open Sans;
+    font-weight: 500;
+}
+
+.main-post-block-date input {
+    width: 100px;
+    font-family: Roboto;
 }

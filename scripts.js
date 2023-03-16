@@ -124,11 +124,11 @@ const post = {
                 </div>
                 <!-- BLOCO DOS BOTÕES -->
                 <div class='main-post-block-buttons'>
-                    <div class='delete-btn'>
-                        <img src="img/delete_icon.svg" alt="delete_icon" onclick="post.deletePost(post.colunms,${id},'mainPost')" class='main-div-delete-button' height=32px>
+                    <div class='delete-btn' onclick="post.deletePost(post.colunms,${id},'mainPost')" >
+                        <img src="img/delete_icon.svg" alt="delete_icon" class='main-div-delete-button' height=32px>
                     </div>
-                    <div class='check-btn'>
-                        <img id='buttonCheck${id}' src="img/check_box.svg" alt="delete_icon" onclick="post.checkPost(${id},'mainPost')" class='main-div-check-button' height=32px>
+                    <div class='check-btn' onclick="post.checkPost(${id},'mainPost')" >
+                        <img id='buttonCheck${id}' src="img/check_box.svg" alt="delete_icon" class='main-div-check-button' height=32px>
                     </div>
                 </div>
             </div>

@@ -1,2 +1,2 @@
-# Lista de afazeres com drag and drop
- Uma lista de afazeres com um simples sistema Crud
+# Lista de afazeres com drag and drop e Crud
+Um pequeno estudo sobre Crud e sistemas de drag'n'drop utilizando HTML, CSS e JavaScript. Você pode criar colunas de afazeres, dar nomes a estas colunas, apaga-las e adicionar afazeres a elas. Com os afazeres é possível modificar o nome, dar uma descrição sobre o afazer, colocar uma data de término, deletar e marcar como feita, assim como é possível arrasta-los para outras colunas, caso deseje.
